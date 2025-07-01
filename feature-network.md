@@ -1,199 +1,192 @@
-# ✅ 📂 Documentation — feature/network
+# 📂 `feature/network` — Storyvord Professional Networking
 
 ---
 
-## 1️⃣ Feature Name
+## 🚀 Overview
 
-`feature/network` — Complete implementation of the **Network Section** including **My Network**, **Send Request**, **Connection Requests (Sent & Received)**, **Suggestions**, and **Message Summary** integration for the **Storyvord** dashboard.
+This module implements the complete **Network System** for **Storyvord**, enabling users to:
 
----
-
-## 2️⃣ Objective
-
-To build a complete **professional networking module** inside Storyvord’s platform where users can:
-- View all current connections.
-- Send new connection requests with a custom message.
-- Manage Sent & Received requests.
-- Accept or decline incoming requests.
-- Get suggested connections.
-- See a summary of connections/messages on the Dashboard & Crew pages.
+- Build and manage their professional network.
+- Send and manage connection requests.
+- Discover and connect with suggested users.
+- See message summaries right inside their **Dashboard** and **Crew Home** pages.
+- Search connections in both quick panels and full pages.
+- Use the system across multiple supported languages.
 
 ---
 
-## 3️⃣ Tech Stack
+## 🎯 Objectives
 
-- React.js (components)
-- Next.js (pages & routing)
-- TypeScript
-- Tailwind CSS (responsive styling)
-- React Query (`useQuery`, `useMutation`)
-- API endpoints for connection actions
-- Reusable Avatar and UI components
-
----
-
-## 4️⃣ Key Files
-
-```
-/src/components/network/MyNetworkSection.tsx → Main “My Network” UI  
-/src/components/network/RequestCard.tsx → Sent & Received Request Cards  
-/src/components/network/SendRequestModal.tsx → Modal to send new connection requests  
-/src/components/network/SimilarSuggestions.tsx → Suggested users carousel  
-/src/components/user/UserAvatar.tsx → Reusable avatar component  
-/src/app/dashboard/network/page.tsx → Full Network page  
-/src/app/crew/network/page.tsx → Crew Network page  
-/src/app/dashboard/page.tsx → Dashboard with right-side network summary  
-/src/app/crew/home/page.tsx → Crew home with right-side network summary  
-/src/lib/api/network/network.ts → API functions (getConnections, sendRequest, acceptRequest, rejectRequest)  
-/src/lib/react-query/queriesAndMutations/network/network.ts → React Query hooks  
-```
+- Centralize **query and mutation** logic in parent components for easy maintenance.
+- Reuse UI components for **client-side** and **crew-side** views.
+- Provide smooth **UX** with smart loading states, fallback avatars, and accessible modals.
+- Add **search functionality** in:
+  - Dashboard quick view.
+  - Full Network pages.
+  - Message Summary widget.
+- Ensure responsive design with scrollable panels for large networks.
+- Improve translations and empty states for all supported locales.
 
 ---
 
-## 5️⃣ Detailed Flow
+## ⚙️ Tech Stack
 
-### 🔹 **My Network Section**
-
-- Fetches the user’s **existing connections**.
-- Displays them as **cards** with `UserAvatar`, name, role.
-- Uses `useQuery` hook:
-  ```ts
-  const { data: connections } = useGetMyConnectionsQuery();
-  ```
+- **React.js** (Components)
+- **Next.js** (Routing & Pages)
+- **TypeScript** (Type safety)
+- **Tailwind CSS** (Responsive styling)
+- **React Query** (`useQuery`, `useMutation`)
+- **i18n** for multilingual support
 
 ---
 
-### 🔹 **Send Request Modal**
+## 📁 Key Structure
 
-- Triggered by a **“Connect”** button on user cards.
-- Opens `SendRequestModal`:
-  - Form with **custom message** field.
-  - Submit calls `useSendConnectionRequestMutation`:
-    ```ts
-    const { mutate: sendRequest } = useSendConnectionRequestMutation();
-    sendRequest({ receiverId, message });
-    ```
-  - Shows toast for success or failure.
-  - Closes modal on success.
+/src/components/network/NetworkPage.tsx → Parent wrapper
+/src/components/network/MyNetwork.tsx → Dashboard/Crew right panel
+/src/components/network/RequestCard.tsx → Sent & Received requests
+/src/components/network/SendRequestForm.tsx → Modal for new requests
+/src/components/network/SimilarSuggestions.tsx → Suggestions carousel/grid
+/src/components/network/MessageSummary.tsx → Right-bottom quick panel
+/src/components/user/UserAvatar.tsx → Fallback avatars
+/src/lib/api/network/network.ts → API handlers
+/src/lib/react-query/queriesAndMutations/network/ → React Query hooks
+/src/i18n/locales/ → Multi-language keys
+/src/app/dashboard/network/page.tsx → Full Dashboard Network
+/src/app/crew/network/page.tsx → Full Crew Network
 
----
-
-### 🔹 **Connection Requests (Sent & Received)**
-
-- Separate tabs for **Sent Requests** & **Received Requests**.
-- `RequestCard` component:
-  - Displays avatar, name, role, and status.
-  - If received: buttons for **Accept** or **Decline**.
-  - Accept: `useAcceptConnectionRequestMutation`.
-  - Decline: `useRejectConnectionRequestMutation`.
+yaml
+Copy
+Edit
 
 ---
 
-### 🔹 **Similar Suggestions**
+## 🗂️ Detailed Features
 
-- Fetches **users you may know** with `useGetSuggestedConnectionsQuery`.
-- Displayed in a horizontal **carousel** or grid.
-- Each suggestion includes:
-  - `UserAvatar`
-  - Name, role
-  - “Connect” button → opens `SendRequestModal`.
+### ✅ **Centralized Data Flow**
 
----
-
-### 🔹 **Reusable `UserAvatar`**
-
-- Shared across:
-  - My Network
-  - Suggestions
-  - Request Cards
-- Supports fallback initials or placeholder if image is missing.
+- All `useQuery` and `useMutation` logic lifted to parent pages.
+- Props passed down for **connections**, **requests**, **actions**, **handlers**.
+- No duplicated logic — only one source of truth.
 
 ---
 
-### 🔹 **Right Panel Message Summary**
+### ✅ **Send Request**
 
-- On:
-  - `/dashboard/` → right sidebar
-  - `/crew/home/` → right sidebar
-- Shows **number of connections**, pending requests, messages.
-- Links to **Full Network Page** or **Full Crew Network**.
-
----
-
-### 🔹 **Full Pages**
-
-- `/dashboard/network/` → Full **My Network** for dashboard users.
-- `/crew/network/` → Full **Crew Network**.
-- Both reuse `MyNetworkSection` + `SimilarSuggestions` + Requests.
+- `SendRequestForm` handles modal flow.
+- Removed obsolete **Full Name** field for cleaner UX.
+- Request submission:
+  - Validates receiver’s email.
+  - Calls `useSendConnectionRequestMutation`.
+  - Shows success/error toast.
+  - Closes modal automatically.
 
 ---
 
-## 6️⃣ APIs Used
+### ✅ **Connection Requests**
 
-| Method | Endpoint | Description |
-|--------|-----------|--------------|
-| `GET` | `/network/my-connections` | Get user’s current connections |
-| `POST` | `/network/send-request` | Send new connection request |
-| `GET` | `/network/sent-requests` | List sent requests |
-| `GET` | `/network/received-requests` | List incoming requests |
-| `PATCH` | `/network/accept-request` | Accept a connection |
-| `DELETE` | `/network/reject-request` | Decline a connection |
-| `GET` | `/network/suggestions` | Get suggested connections |
+- `RequestCard` shows:
+  - Avatar, name, job title.
+  - Buttons for **Accept** and **Decline**.
+  - Loading state on action.
+- Accepts/declines handled via React Query mutations.
 
 ---
 
-## 7️⃣ State & Hooks
+### ✅ **Similar Suggestions**
 
-- `useQuery` for:
-  - Connections
-  - Suggestions
-  - Requests (sent & received)
-- `useMutation` for:
-  - Send request
-  - Accept request
-  - Reject request
-
-Example:
-```ts
-export const useSendConnectionRequestMutation = () => {
-  return useMutation({
-    mutationFn: (data: SendRequestInput) => sendConnectionRequest(data),
-  });
-};
-```
+- Displays a carousel/grid of recommended connections.
+- Each card has `Connect` → opens `SendRequestForm`.
+- Layout updated for long job titles with proper truncation.
 
 ---
 
-## 8️⃣ Challenges & How I Tackled Them
+### ✅ **Message Summary**
 
-- ✅ **Dynamic Modals:** Ensured only 1 modal opens per click, handled closing on success.
-- ✅ **API Cache Updates:** Used React Query `invalidateQueries` to refresh lists on accept/reject.
-- ✅ **Fallback Avatars:** Added fallback initials when profile images fail.
-- ✅ **Cross-page Consistency:** Reused `UserAvatar` and card components for Dashboard, Crew, Network pages.
-- ✅ **Responsive Layout:** Tailwind CSS breakpoints for cards & grid layout.
-
----
-
-## 9️⃣ Final Outcome
-
-- Fully functional **professional networking** inside Storyvord.
-- Users can:
-  - See connections.
-  - Send requests.
-  - Accept/decline requests.
-  - Discover new connections.
-- Responsive, reusable UI across **Dashboard**, **Crew**, **Network** pages.
-- Clean React Query logic for data sync.
+- Right-bottom widget on:
+  - `/dashboard/`
+  - `/crew/home/`
+- Shows quick list of connections.
+- Added **Search Bar** inside widget for instant filtering.
+- Applied max-height with scroll for large lists.
+- Fixed layout overflow bugs.
 
 ---
 
-## 🌐 Demonstration
+### ✅ **Full Network Pages**
 
-- **Right-Bottom Panel**:
-  - [https://dev.storyvord.io/dashboard/](https://dev.storyvord.io/dashboard/)
-  - [https://dev.storyvord.io/crew/home/](https://dev.storyvord.io/crew/home/)
-- **Full Page**:
-  - [https://dev.storyvord.io/dashboard/network/](https://dev.storyvord.io/dashboard/network/)
-  - [https://dev.storyvord.io/crew/network/](https://dev.storyvord.io/crew/network/)
+- `/dashboard/network/`
+- `/crew/network/`
+- Reuse:
+  - `MyNetwork`
+  - `ConnectionRequest`
+  - `SimilarSuggestions`
+  - `MessageSummary`
+- Includes **search**, **filter**, **empty states**, and full interactions.
 
-Login required to test full features.
+---
+
+### ✅ **Internationalization**
+
+- Multi-language keys added for:
+  - English, Hindi, Spanish, French, German, Italian, Chinese.
+- Translations updated for:
+  - Empty states
+  - Actions
+  - Button labels
+  - Toast messages
+- Consistent fallback text when data is empty or search returns no results.
+
+---
+
+## 🔎 Search Improvements
+
+- `SearchBar` integrated in:
+  - Dashboard panel
+  - Full Network pages
+  - Message Summary
+- Real-time filtering of connections by name.
+- `noResultsFound` text shown if no match.
+
+---
+
+## ✅ Fixes & Polishing
+
+- Truncation for long job titles in **Similar Suggestions**.
+- Consistent padding and scroll for quick lists.
+- Better form handling with single input (Email only).
+- Navigation in sidebars updated to include **Network** link.
+- Loading animations for sending, accepting, rejecting requests.
+- Fallback avatars if user photo is missing.
+
+---
+
+## 🔗 Live Demonstration
+
+**📍 Right-Bottom Panel**
+
+- [`/dashboard/`](https://dev.storyvord.io/dashboard/)
+- [`/crew/home/`](https://dev.storyvord.io/crew/home/)
+
+**🌐 Full Pages**
+
+- [`/dashboard/network/`](https://dev.storyvord.io/dashboard/network/)
+- [`/crew/network/`](https://dev.storyvord.io/crew/network/)
+
+🔐 *You must be logged in to test the full experience.*
+
+---
+
+## ✅ Final Checklist
+
+- [x] Centralized query & mutation logic.
+- [x] Client & Crew page support.
+- [x] Search added to all sections.
+- [x] Overflow & layout bugs fixed.
+- [x] Navigation updated.
+- [x] i18n keys reviewed.
+- [x] Demonstration verified.
+
+---
+
+**🎉 This completes the `feature/network` module for Storyvord!**
