@@ -1,0 +1,129 @@
+# 📝 `feature/script-editor` — Storyvord Script Editor (Lexical Integration)
+
+---
+
+## 🚀 Overview
+
+This module integrates a fully-featured **Lexical WYSIWYG Editor** for enhanced script editing in the Storyvord platform. It provides:
+
+- Real-time editing experience with a customizable toolbar.
+- Rich formatting options for writers and creators.
+- Dynamic loading of saved content and autosync features.
+- Plugin-driven architecture for clean scalability.
+
+---
+
+## 🎯 Objectives
+
+- Embed Lexical Editor to replace static text input for script fields.
+- Provide a rich editing toolbar (bold, italic, links, code, etc.).
+- Ensure user input is synced dynamically with parent state.
+- Maintain a clean, responsive, and accessible UI.
+- Keep the editor easily extensible via plugins.
+
+---
+
+## ⚙️ Tech Stack
+
+- **React.js** — component-based rendering
+- **Next.js** — routing & optimization
+- **Lexical** — customizable, lightweight text editor
+- **TypeScript** — strict typing for plugins and props
+- **Tailwind CSS** — consistent styling across components
+
+---
+
+## 📁 Folder Structure
+
+```
+/src/components/editor/LexicalEditor.tsx           → Main wrapper with Composer & configuration
+/src/components/editor/ToolbarPlugin.tsx           → Rich formatting controls (bold, italic, etc.)
+/src/components/editor/InitialContentPlugin.tsx    → Loads pre-saved content into editor on mount
+/src/components/editor/OnChangeSyncPlugin.tsx      → Sends updated content to parent in real-time
+/src/lib/toast.ts                                  → Toasts for save/discard user feedback
+/src/lib/types.ts                                  → Editor types and payload structure
+```
+
+---
+
+## 🧩 Core Features
+
+### ✅ **Lexical Editor Integration**
+
+- Replaces static input with rich, real-time editable area.
+- Supports paragraphs, inline styles, block elements, and links.
+
+### ✅ **Toolbar Plugin**
+
+- Users can apply:
+  - **Bold**, **Italic**, **Underline**, **Strikethrough**
+  - **Code**, **Heading1**, **Heading2**
+  - **Hyperlinks** via prompt modal
+- Toolbar is context-aware and fully reactive to selection.
+
+### ✅ **Initial Content Plugin**
+
+- Injects previously saved content into the editor on load.
+- Supports seamless editing of old or draft scripts.
+
+### ✅ **OnChange Plugin**
+
+- Syncs updated content to parent `onChange()` handler.
+- Used to dynamically update preview or save state.
+
+### ✅ **Auto Focus + History**
+
+- Focuses on editor field automatically when mounted.
+- Built-in undo/redo with keyboard support.
+
+### ✅ **User Feedback Toasts**
+
+- Save, discard, or edit actions trigger consistent toast messages.
+- Toast logic abstracted in `/lib/toast.ts` for reusability.
+
+---
+
+## 🧪 Test Notes
+
+- Checked formatting application & link creation UX.
+- Verified undo/redo functionality and initial content hydration.
+- Validated `onChange` flow with actual backend update handlers.
+
+---
+
+## 📦 Dependencies Installed
+
+```json
+"lexical": "^0.33.1",
+"@lexical/react": "^0.33.1",
+"@lexical/rich-text": "^0.33.1",
+"@lexical/link": "^0.33.1"
+```
+
+---
+
+## 🔗 Live Demo
+
+> Accessible via:  
+[`/project-details/:id/script`](https://dev.storyvord.io/project-details/...) *(must be authenticated)*  
+Look for the **Script Writing Section** inside the project details page.
+
+---
+
+## ✅ Final Result
+
+- [x] Lexical editor fully embedded and styled
+- [x] Rich formatting toolbar integrated
+- [x] Supports dynamic initial value and real-time sync
+- [x] Toast feedback implemented
+- [x] Tested with 3+ real scripts and edge cases
+
+---
+
+**🎉 This finalizes the `feature/editor` integration — bringing powerful rich-text capabilities to scripts within the Storyvord platform.**
+
+---
+
+**🔒 Note:**  
+This documentation clearly explains the **feature’s purpose, architecture, user flow, challenges, and solutions** — without exposing any private or sensitive source code.  
+It serves as a **professional record** of the development approach and best practices for future reference and team knowledge sharing.
